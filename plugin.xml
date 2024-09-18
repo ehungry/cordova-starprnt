@@ -5,28 +5,49 @@
 	<author>Jose Angarita / Ruben Casas</author>
 	<keywords>print,starmicronics,star printer</keywords>
 	<license>MIT</license>
+
 	<engines>
     	<engine name="cordova" version=">=3.4.0"/>
 		<engine name="cordova-android" version=">=12.0.0" />
   	</engines>
+
 	<js-module name="StarPRNT" src="www/StarPRNT.js">
 		<clobbers target="starprnt" />
 	</js-module>
+
 	<platform name="android">
+		<!-- Using StarPRNT_Android_SDK_V5_18_0  -->
+<!--		<lib-file src="src/android/lib/stario.aar" />-->
+<!--		<lib-file src="src/android/lib/starioextension.aar"  />-->
+<!--		<lib-file src="src/android/lib/StarIODeviceSetting.aar" />-->
+
+		<resource-file src="src/android/lib/stario.aar" target="lib/stario.aar" />
+		<resource-file src="src/android/lib/starioextension.aar" target="lib/starioextension.aar"  />
+		<resource-file src="src/android/lib/StarIODeviceSetting.aar" target="lib/StarIODeviceSetting.aar" />
+	 	<dependency id="cordova-plugin-compat" version="^1.0.0"/>
+
+		<!-- app/src/main/ get prepended to target -->
+		<resource-file src="src/android/xml/device_filter.xml" target="res/xml/device_filter.xml" />
+		<resource-file src="src/android/xml/accessory_filter.xml" target="res/xml/accessory_filter.xml" />
+
+		<framework src="src/android/*.gradle" custom="true" type="gradleReference" />
+
 		<source-file src="src/android/StarPRNT.java" target-dir="src/starprnt/cordova" />
-		<!-- Using StarPRNT_Android_SDK_V5_17_0  -->
-		<source-file src="src/android/lib/StarIOPort3.1.jar" target-dir="libs" />
-		<source-file src="src/android/lib/starioextension.jar" target-dir="libs" />
+
 		<config-file target="res/xml/config.xml" parent="/*">
-		<feature name="StarPRNT">
-			<param name="android-package" value="starprnt.cordova.StarPRNT" />
-		</feature>
+			<feature name="StarPRNT">
+				<param name="android-package" value="starprnt.cordova.StarPRNT" />
+			</feature>
 		</config-file>
+
 		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.INTERNET" />
 			<uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+			<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
 			<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 			<uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
 		</config-file>
+
 		<config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
 			<intent-filter>
 				<action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -35,11 +56,8 @@
 			<meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/device_filter" />
 			<meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" android:resource="@xml/accessory_filter" />
 		</config-file>
-
-		<!-- app/src/main/ get prepended to target -->
-		<resource-file src="src/android/xml/device_filter.xml" target="res/xml/device_filter.xml" />
-		<resource-file src="src/android/xml/accessory_filter.xml" target="res/xml/accessory_filter.xml" />
 	</platform>
+
 	<platform name="ios">
 		<config-file target="config.xml" parent="/*">
 			<feature name="StarPRNT">
@@ -47,12 +65,12 @@
 			</feature>
 		</config-file>		
 		<config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
-	    <array>
-        <string>jp.star-m.starpro</string>
-	    </array>
+			<array>
+				<string>jp.star-m.starpro</string>
+			</array>
 		</config-file>
 		<config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
-      <string>To connect to Star Micronic's Devices</string>
+      <string>To connect to Star Micronics Devices</string>
 	  </config-file>
 		<header-file src="src/ios/Communication.h" />
 		<source-file src="src/ios/Communication.m" />
