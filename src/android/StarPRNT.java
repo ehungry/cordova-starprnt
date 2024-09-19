@@ -155,15 +155,15 @@ public class StarPRNT extends CordovaPlugin {
             }
         };
         this.usbManager = (UsbManager) cordova.getActivity().getSystemService(Context.USB_SERVICE);
-        this.pendingIntent = PendingIntent.getBroadcast(cordova.getContext(), 0, new Intent(INTENT_ACTION_GRANT_USB), PendingIntent.FLAG_MUTABLE);
+        this.pendingIntent = PendingIntent.getBroadcast(cordova.getContext(), 0, new Intent(INTENT_ACTION_GRANT_USB), PendingIntent.FLAG_IMMUTABLE);
         intentFilter = new IntentFilter(INTENT_ACTION_GRANT_USB);
-        cordova.getActivity().registerReceiver(this.broadcastReceiver, intentFilter);
+        cordova.getActivity().registerReceiver(this.broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
     }
 
     @Override
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
-        this.cordova.getActivity().registerReceiver(broadcastReceiver, intentFilter);
+        this.cordova.getActivity().registerReceiver(broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
     }
 
     @Override
